@@ -21,7 +21,7 @@ After installing the module, add the following to your `application.conf`:
 
 ## Usage
 
-### Meta and Script Tags
+### Script Tags
 
 The first step is to put the `mustache.meta` tag somewhere in your document. This tag outputs an HTML meta tag containing the snippets you have defined for the current request.
 
@@ -33,11 +33,11 @@ After your meta tag you should include `play-mustache.min.js`, which is in the p
 	        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
 	        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-	        #{mustache.meta /}
 	        <script type="text/javascript" src="@{'/public/javascripts/play-mustache.min.js'}"></script>
 	    </head>
 	    <body>
 	        #{doLayout /}
+	        #{mustache.script /}
 	    </body>
 	</html> 
 

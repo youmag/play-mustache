@@ -1,0 +1,29 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<h2>List</h2>
+<ul>
+	#{list contents, as:'content' }				
+		#{mustache.print '/content_item.html', context:content/}		
+	#{/list}
+</ul>
+
+<h2>MAJAX</h2>
+<div id="majax"></div>
+
+
+<script type="text/javascript">
+(function($) {
+	$.getJSON('application/json', function(data) {
+		var items = [];
+		for(var i in data){
+			console.log(data[i]);
+			items[i] = PlayMustache.to_html('/content_item.html', data[i]);
+		}
+
+		$('#majax').html('<ul>' + items.join('') + '</ul>');
+	});
+})(jQuery);
+</script>
+
+

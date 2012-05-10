@@ -1,11 +1,8 @@
 package play.modules.mustache;
 
-import groovy.lang.Closure;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -13,16 +10,13 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sampullara.mustache.*;
-import com.sampullara.util.FutureWriter;
-
-import play.Play;
-import play.cache.Cache;
-import play.templates.FastTags;
-import play.templates.JavaExtensions;
-import play.templates.GroovyTemplate.ExecutableTemplate;
-import play.utils.Utils;
 import play.vfs.VirtualFile;
+
+import com.sampullara.mustache.Mustache;
+import com.sampullara.mustache.MustacheCompiler;
+import com.sampullara.mustache.MustacheException;
+import com.sampullara.mustache.Scope;
+import com.sampullara.util.FutureWriter;
 
 public class MustacheSession {
     
@@ -64,6 +58,11 @@ public class MustacheSession {
         m.execute(writer, new Scope(context));
         writer.flush();
         return sw.toString();
+    }
+    
+    public void clean(){
+    	loaded_.clear();
+    	raw_.clear();
     }
     
     private String readFile(String path) throws IOException {
