@@ -569,7 +569,9 @@ var PlayMustache = function(){
 		to_html: function (key, context) {
 			var tmpl = meta[key];
             var partials = {};
-            var rawPartials = tmpl.match(/{{>([\w\s\d/_]+)}}/g);
+            var pattern = new RegExp("{{>([\w\s\/_]+)}}","g");
+            //var rawPartials = tmpl.match(/{{>([\w\s\d/_]+)}}/g);
+            var rawPartials = tmpl.match(pattern);
 			
 			for (var i = 0, len = (rawPartials == null ? 0 : rawPartials.length); i < len; i++) {
                 if (typeof rawPartials[i] == 'undefined') break;
@@ -577,10 +579,6 @@ var PlayMustache = function(){
                 var name = key.substr(key.lastIndexOf('/') + 1);
                 partials[key] = meta[name + '.html'];
             }
-			console.log("TEST");
-			console.log(tmpl);
-			console.log(context)
-			console.log(partials)
             return Mustache.to_html(tmpl, context, partials);
 		}
 	}

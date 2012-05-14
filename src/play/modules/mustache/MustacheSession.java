@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import play.Logger;
 import play.vfs.VirtualFile;
 
 import com.sampullara.mustache.Mustache;
@@ -50,7 +51,7 @@ public class MustacheSession {
     
     public String toHtml(String key, Object context) throws MustacheException, IOException {
         if(!loaded_.containsKey(key)){
-            addFromFile(key, root_+key);
+            addFromFile(key, root_ + key);
         }
         Mustache m = loaded_.get(key);
         StringWriter sw = new StringWriter();
@@ -58,6 +59,17 @@ public class MustacheSession {
         m.execute(writer, new Scope(context));
         writer.flush();
         return sw.toString();
+    }
+    
+    public void clean(String key) throws MustacheException, IOException{
+    	Logger.trace("Clean %s", key);
+    	
+    	// remove
+    	loaded_.remove(key);
+    	raw_.remove(key);
+
+    	// add
+    	addFromFile(key, root_ + "/" + key);
     }
     
     public void clean(){
@@ -91,7 +103,7 @@ public class MustacheSession {
                     addFilesRecursively(child, root);
                 }else{
                     String path = child.getAbsolutePath();
-                    String key = path.replace(root+"/", "");
+                    String key = path.replace(root, "");
                     this.addFromFile(key, path);
                 }
             }
